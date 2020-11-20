@@ -1,0 +1,15 @@
+**/.ropeproject/*
+**/env/*
+**/media/*
+**/log/*
+**/.idea/*
+**/.vscode/*
+**/.coverage
+**/__pycache__/*
+/server/static/data/*
+*.pyc
+*.swp
+*.deb
+*.pid
+*.egg-info
+/dist
