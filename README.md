@@ -1,4 +1,4 @@
-# Go2sky for gRPC
+# Skywalking plugins for python
 
 ## Installation
 
