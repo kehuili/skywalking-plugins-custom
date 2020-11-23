@@ -15,6 +15,13 @@ def install():
 
 def _sw_publish_func(_publish):
     def _sw_publish(this, topic, payload=None, qos=0, retain=False, properties=None):
+        from paho.mqtt import __version__
+        from packaging import version
+        has_properties = False
+        # version >= 1.5: has properties as parameter
+        if version.parse(__version__) >= version.parse('1.5.0'):
+          has_properties = True
+
         peer = '%s:%s' % (this._host, this._port)
 
         context = get_context()
@@ -44,9 +51,14 @@ def _sw_publish_func(_publish):
                 payload['headers'] = {}
                 for item in carrier:
                     payload['headers'][item.key] = item.val
-
+            
+            payload = json.dumps(payload)
+            
             try:
-                res = _publish(this, topic, json.dumps(payload), qos, retain, properties)
+                if has_properties:
+                  res = _publish(this, topic, payload=payload, qos=qos, retain=retain, properties=properties)
+                else:
+                  res = _publish(this, topic, payload=payload, qos=qos, retain=retain)
                 span.tag(Tag(key=tags.MqBroker, val=peer))
                 span.tag(Tag(key=tags.MqTopic, val=topic))
             except BaseException as e:

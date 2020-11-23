@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name='utc-skywalking-plugins',
-    version='0.1.0',
+    version='0.1.1',
     author="Kehui Li",
     author_email="kehui.li@uisee.com",
     description="UISEE Technology Skywalking plugin for python",

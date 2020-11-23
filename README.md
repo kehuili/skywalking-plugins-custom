@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-pip install --trusted-host 10.0.162.5 -i http://10.0.162.5:31670 utc-skywalking-plugin
+pip install --trusted-host 10.0.162.5 -i http://10.0.162.5:31670 utc-skywalking-plugins
 ```
 
 ## Usage

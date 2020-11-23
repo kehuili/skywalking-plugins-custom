@@ -1,1 +1,1 @@
-from utc_skywalking_plugins.sw_emqx import install as install_emqx
+from utc_skywalking_plugins.sw_mqtt import install as install_mqtt
