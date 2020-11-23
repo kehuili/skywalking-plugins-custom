@@ -14,7 +14,7 @@ import utc_skywalking_plugins
 # start skywalking agent
 config.init(collector='cloud.uisee.com:32018', service='test mqtt')
 agent.start()
-utc_skywalking_plugins.install_emqx()
+utc_skywalking_plugins.install_mqtt()
 
 # than publish and receive message as usual
 

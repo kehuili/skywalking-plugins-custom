@@ -19,7 +19,7 @@ def on_message(client, userdata, msg):
 config.init(collector='cloud.uisee.com:32018', service='test mqtt')
 agent.start()
 # install emqx skywalking plugin
-utc_skywalking_plugins.install_emqx()
+utc_skywalking_plugins.install_mqtt()
 
 # pass an existing context
 context = get_context() 
