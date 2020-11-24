@@ -5,6 +5,7 @@ from skywalking.trace.context import get_context, _thread_local
 from skywalking.trace.tags import Tag
 import json
 
+
 def install():
     from paho.mqtt.client import Client
 
@@ -13,6 +14,7 @@ def install():
     Client.publish = _sw_publish_func(_publish)
     Client._handle_on_message = _sw_on_message_func(__handle_on_message)
 
+
 def _sw_publish_func(_publish):
     def _sw_publish(this, topic, payload=None, qos=0, retain=False, properties=None):
         from paho.mqtt import __version__
@@ -20,12 +22,12 @@ def _sw_publish_func(_publish):
         has_properties = False
         # version >= 1.5: has properties as parameter
         if version.parse(__version__) >= version.parse('1.5.0'):
-          has_properties = True
+            has_properties = True
 
         peer = '%s:%s' % (this._host, this._port)
 
         context = get_context()
-        carrier = Carrier() 
+        carrier = Carrier()
         import paho.mqtt.client as mqtt
         with context.new_exit_span(op="EMQX/Topic/" + topic + "/Producer" or "/",
                                    peer=peer, carrier=carrier) as span:
@@ -47,18 +49,20 @@ def _sw_publish_func(_publish):
                 for item in carrier:
                     headers[item.key] = item.val
                 payload['headers'] = headers
-            else: 
+            else:
                 payload['headers'] = {}
                 for item in carrier:
                     payload['headers'][item.key] = item.val
-            
+
             payload = json.dumps(payload)
-            
+
             try:
                 if has_properties:
-                  res = _publish(this, topic, payload=payload, qos=qos, retain=retain, properties=properties)
+                    res = _publish(this, topic, payload=payload,
+                                   qos=qos, retain=retain, properties=properties)
                 else:
-                  res = _publish(this, topic, payload=payload, qos=qos, retain=retain)
+                    res = _publish(this, topic, payload=payload,
+                                   qos=qos, retain=retain)
                 span.tag(Tag(key=tags.MqBroker, val=peer))
                 span.tag(Tag(key=tags.MqTopic, val=topic))
             except BaseException as e:
@@ -75,11 +79,11 @@ def _sw_on_message_func(__handle_on_message):
         context = get_context()
         topic = message.topic
         carrier = Carrier()
-        payload = json.loads(str(message.payload,'utf-8'))
+        payload = json.loads(str(message.payload, 'utf-8'))
         if payload is not None and 'headers' in payload:
-          for item in carrier:
-              if item.key in payload['headers']:
-                  item.val = payload['headers'][item.key]
+            for item in carrier:
+                if item.key in payload['headers']:
+                    item.val = payload['headers'][item.key]
 
         with context.new_entry_span(op="EMQX/Topic/" + topic + "/Consumer" or "", carrier=carrier) as span:
             span.layer = Layer.MQ
