@@ -19,8 +19,8 @@ agent.start()
 utc_skywalking_plugins.install_socket()
 
 # receive message as usual
-serversocket.connect((host, port))
-msg = serversocket.recv(1024)
+# serversocket.connect((host, port))
+# msg = serversocket.recv(1024)
 
 clientsocket, addr = serversocket.accept()
 msg = json.dumps({'a': 'Hello World'})

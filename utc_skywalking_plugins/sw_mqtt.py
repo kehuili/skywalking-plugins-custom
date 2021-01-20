@@ -1,7 +1,7 @@
 from skywalking import Layer, Component
 from skywalking.trace import tags
 from skywalking.trace.carrier import Carrier
-from skywalking.trace.context import get_context, _thread_local
+from skywalking.trace.context import get_context
 from skywalking.trace.tags import Tag
 import json
 
@@ -88,7 +88,7 @@ def _sw_on_message_func(__handle_on_message):
         with context.new_entry_span(op="EMQX/Topic/" + topic + "/Consumer" or "", carrier=carrier) as span:
             span.layer = Layer.MQ
             span.component = Component.RabbitmqConsumer
-            _thread_local.context = context
+            
             try:
                 __handle_on_message(this, message)
                 span.tag(Tag(key=tags.MqBroker, val=peer))

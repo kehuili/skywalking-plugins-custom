@@ -1,7 +1,7 @@
 from skywalking import Layer, Component
 from skywalking.trace import tags
 from skywalking.trace.carrier import Carrier
-from skywalking.trace.context import get_context, _thread_local
+from skywalking.trace.context import get_context
 from skywalking.trace.tags import Tag
 import json
 
@@ -67,7 +67,6 @@ def _recv_func(_recv):
         with context.new_entry_span(op="socket" + "/Client", carrier=carrier) as span:
             span.layer = Layer.Unknown
             span.component = Component.Unknown
-            _thread_local.context = context
 
             try:
                 span.tag(Tag(key='socket.client', val=peer))

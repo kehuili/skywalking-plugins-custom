@@ -17,5 +17,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],  
-    install_requires = ['apache-skywalking'],
+    install_requires = ['apache-skywalking==0.3.0'],
 )
