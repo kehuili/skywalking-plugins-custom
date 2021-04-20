@@ -43,7 +43,6 @@ def sk_recv_func(peername, bufsize, func, flags=0):
     peer = '%s:%s' % (peername[0], peername[1])
 
     msg = func(bufsize, flags)
-    print(str(msg, 'utf-8'))
     payload = json.loads(str(msg, 'utf-8'))
     if payload is not None and 'headers' in payload:
         for item in carrier:
@@ -53,7 +52,7 @@ def sk_recv_func(peername, bufsize, func, flags=0):
     with context.new_entry_span(op="socket" + "/Client", carrier=carrier) as span:
         span.layer = Layer.Unknown
         span.component = Component.Unknown
-        _thread_local.context = context
+        # _thread_local.context = context
 
         try:
             span.tag(Tag(key='socket.client', val=peer))
