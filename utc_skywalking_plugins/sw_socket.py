@@ -2,7 +2,7 @@ import json
 
 from skywalking import Layer, Component
 from skywalking.trace.carrier import Carrier
-from skywalking.trace.context import get_context, _thread_local
+from skywalking.trace.context import get_context
 from skywalking.trace.tags import Tag
 
 
@@ -10,9 +10,9 @@ from skywalking.trace.tags import Tag
 def sk_send_func(peername, data, func, flags=0):
     peer = '%s:%s' % (peername[0], peername[1])
     context = get_context()
-    carrier = Carrier()
     with context.new_exit_span(op="socket" + "/Producer" or "/",
-                               peer=peer, carrier=carrier) as span:
+                               peer=peer) as span:
+        carrier = span.inject()
         # no corresponding layer and component
         span.layer = Layer.Unknown
         span.component = Component.Unknown

@@ -27,22 +27,11 @@ def _sw_publish_func(_publish):
         peer = '%s:%s' % (this._host, this._port)
 
         context = get_context()
-        carrier = Carrier()
-        import paho.mqtt.client as mqtt
         with context.new_exit_span(op="EMQX/Topic/" + topic + "/Producer" or "/",
-                                   peer=peer, carrier=carrier) as span:
+                                   peer=peer) as span:
+            carrier = span.inject()
             span.layer = Layer.MQ
             span.component = Component.RabbitmqProducer
-            # properties = mqtt.Properties(mqtt.PacketTypes.PUBLISH) if properties is None else properties
-
-            # if properties.CorrelationData is None:
-            #     headers = {}
-            #     for item in carrier:
-            #         headers[item.key] = item.val
-            #     properties.CorrelationData = headers
-            # else:
-            #     for item in carrier:
-            #         properties.CorrelationData[item.key] = item.val
             payload = {} if payload is None else json.loads(payload)
             if 'headers' in payload:
                 headers = {}
