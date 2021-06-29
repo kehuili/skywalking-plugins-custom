@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name='utc-skywalking-plugins',
-    version='0.2.3',
+    version='0.2.4',
     author="Kehui Li",
     author_email="kehui.li@uisee.com",
     description="UISEE Technology Skywalking plugin for python",
@@ -17,5 +17,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],  
-    install_requires = ['apache-skywalking==0.3.0'],
+    install_requires = ['apache-skywalking==0.6.0'],
 )
