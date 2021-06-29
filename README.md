@@ -23,9 +23,27 @@ utc_skywalking_plugins.install_socket()
 
 # than publish and receive message as usual
 
+### create a local span
 context = get_context() 
-carrier = Carrier()
-with context.new_entry_span(op='https://github.com/apache', carrier=carrier) as span:
-    span.component = Component.Unknown
+span = context.new_local_span(op='start')
+span.start()
+span.tag(Tag(key='Singer', val='Nakajima'))
+# do something
+span.stop()
+
+# or
+context = get_context() 
+with context.new_local_span(op='start') as span:
+    span.tag(Tag(key='Singer', val='Nakajima'))
+# when use 'with' syntax, will automatically start span when enter the 'with' context, stop when exit
+
+### cross thread propagation
+@runnable()
+def some_method(): 
+    # do something
+
+from threading import Thread 
+t = Thread(target=some_method)
+t.start()
 
 ```
