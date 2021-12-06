@@ -1,2 +1,3 @@
 from utc_skywalking_plugins.sw_mqtt import install as install_mqtt
 from utc_skywalking_plugins.sw_socket import sk_recv_func, sk_send_func
+from utc_skywalking_plugins.sw_grpc import SkyWalkingClientInterceptor, SkyWalkingServerInterceptor
